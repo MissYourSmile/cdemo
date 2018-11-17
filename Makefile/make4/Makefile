@@ -1,16 +1,14 @@
 OBJ = test.o max.o min.o
 CC = gcc
 CFLAGS = -g
+TARGET = $(patsubst %.c, %.o, $(SRC))
 
 test: $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 
-test.o: test.c
+%.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $^
-max.o: max.c
-	$(CC) $(CFLAGS) -o $@ -c $^
-min.o: min.c
-	$(CC) $(CFLAGS) -o $@ -c $^
+
 
 .PHONY: clean
 
