@@ -1,0 +1,14 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BUFFER_SIZE	utili.h	19;"	d
+Mkfifo	pakedge.c	/^int Mkfifo(const char* pathname)$/;"	f
+OpenR	pakedge.c	/^int OpenR(const char* pathname)$/;"	f
+OpenW	pakedge.c	/^int OpenW(const char* pathname)$/;"	f
+_PAKEDGE_H	pakedge.h	9;"	d
+_UTILI_H	utili.h	9;"	d
+main	cli.c	/^int main()$/;"	f
+main	ser.c	/^int main()$/;"	f
