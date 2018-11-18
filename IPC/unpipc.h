@@ -9,6 +9,7 @@
 #define _UNPIPC_H
 
 #include <stdio.h>
+#include <stdarg.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
@@ -19,12 +20,30 @@
 #include <sys/sem.h>
 #define BUFFER_SIZE 256
 
+//union semun
+union semun
+{
+	int val;
+	struct semid_ds *buf;
+	unsigned short *array;
+	struct seminfo *__buf;
+};
+
+//Pipe
 int Mkfifo(const char* pathname);
 int Pipe(int pipefd[2]);
 int OpenW(const char* pathname);
 int OpenR(const char* pathname);
+
+//IPC sem
 key_t Ftok(const char *pathname, int proi_id);
 int Semget(key_t key, int nsems, int semflg);
-int Semctl(int semid, int semnum, int cmd);
+int Semctl(int semid, int semnum, int cmd, ...);
 int Semop(int semid, struct sembuf *sops, unsigned nsops);
+
+//print
+void err_quit(const char * str, ...);
+
+//calloc
+void *Calloc(size_t nmemb, size_t size);
 #endif

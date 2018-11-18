@@ -73,9 +73,23 @@ int Semget(key_t key, int nsems, int semflg)
 	return sem_id;
 }
 
-int Semctl(int semid, int semnum, int cmd)
+int Semctl(int semid, int semnum, int cmd, ...)
 {
-	int ret = semctl(semid, semnum, cmd);
+	va_list ap;
+	va_start(ap, cmd);
+	int ret;
+	switch(cmd)
+	{
+		case SETALL:
+		case GETALL:
+		case SETVAL:
+		case IPC_STAT:
+			ret = semctl(semid, semnum, cmd, va_arg(ap, union semun));
+			break;
+		default:
+			ret = semctl(semid, semnum, cmd);
+	}
+	va_end(ap);
 	if(-1 == ret)
 	{
 		perror("semctl.");
@@ -94,3 +108,25 @@ int Semop(int semid, struct sembuf *sops, unsigned nsops)
 	}
 	return ret;
 }
+
+void err_quit(const char * str, ...)
+{
+	va_list ap;
+	va_start(ap, str);
+	printf(str, va_arg(ap, char *));
+	printf("\n");
+	va_end(ap);
+	exit(1);
+}
+
+void *Calloc(size_t nmemb, size_t size)
+{
+	void *ptr = calloc(nmemb, size);
+	if(NULL == ptr)
+	{
+		perror("calloc");
+		exit(1);
+	}
+	return ptr;
+}
+
