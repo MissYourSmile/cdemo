@@ -10,10 +10,7 @@
 int main(int argc, char *argv[])
 {
 	if(argc < 2)
-	{
-		printf("usage: %s <pathname> \n", argv[0]);
-		return -1;
-	}
+		err_quit("usage: %s <pathname>", argv[0]);
 	int semid = Semget(Ftok(argv[1], 0xff), 0, 0);
 	Semctl(semid, 0, IPC_RMID);
 	return 0;
