@@ -1,12 +1,13 @@
 VPATH = ../
+CFLAGS = -g -Wall -Werror
+SRC = $(wildcard *.c)
+TARGET = $(patsubst %.c, %, $(SRC))
 
-objects = create_sem rm_sem
+.PHONY: all clean
 
-BIN_DIR := ./bin
-SRC_DIR := .
+all: $(TARGET)
 
-all: $(objects)
-
-#$(BIN_DIR)/%: $(SRC_DIR)/%.c unpipc.o
-$(objects):% : %.c unpipc.o
-	gcc -o $@ $< unpipc.o
+%: %.c unpipc.o
+	$(CC) $(CFLAGS) -o $@ $^
+clean:
+	$(RM) $(TARGET)

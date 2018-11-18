@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
 		printf("usage: %s <pathname> <nsems>\n", argv[0]);
 		return -1;
 	}
-	int c, oflag, semid, nsems;
+	int nsems;
 	nsems = atoi(argv[2]);
-	semid = Semget(Ftok(argv[1], 0xff), nsems, IPC_CREAT | IPC_EXCL | 0775);
+	Semget(Ftok(argv[1], 0xff), nsems, IPC_CREAT | IPC_EXCL | 0775);
 	return 0;
 }
