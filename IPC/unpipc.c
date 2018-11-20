@@ -130,3 +130,34 @@ void *Calloc(size_t nmemb, size_t size)
 	return ptr;
 }
 
+int Shmget(key_t key, size_t size, int shmflg)
+{
+	int ret = shmget(key, size, shmflg);
+	if(-1 == ret)
+	{
+		perror("shmget.");
+		exit(1);
+	}
+	return ret;
+}
+int Shmctl(int shmid, int cmd, struct shmid_ds *buf)
+{
+	int ret = shmctl(shmid, cmd, buf);
+	if(-1 == ret)
+	{
+		perror("shmctl.");
+		exit(1);
+	}
+	return ret;
+}
+
+void *Shmat(int shmid, const void *shmaddr, int shmflg)
+{
+	void *ptr = shmat(shmid, shmaddr, shmflg);
+	if((void*)-1 == ptr)
+	{
+		perror("shmat.");
+		exit(1);
+	}
+	return ptr;
+}

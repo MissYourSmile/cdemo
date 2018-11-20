@@ -18,6 +18,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <sys/sem.h>
+#include <sys/shm.h>
 #define BUFFER_SIZE 256
 
 //union semun
@@ -40,6 +41,12 @@ key_t Ftok(const char *pathname, int proi_id);
 int Semget(key_t key, int nsems, int semflg);
 int Semctl(int semid, int semnum, int cmd, ...);
 int Semop(int semid, struct sembuf *sops, unsigned nsops);
+
+//IPC shm
+int Shmget(key_t key, size_t size, int shmflg);
+int Shmctl(int shmid, int cmd, struct shmid_ds *buf);
+void *Shmat(int shmid, const void *shmaddr, int shmflg);
+
 
 //print
 void err_quit(const char * str, ...);

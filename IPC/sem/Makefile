@@ -14,7 +14,7 @@ all: $(TARGET)
 	@echo build $@ finish
 unpipc.o: unpipc.c
 	@echo begin build $@
-	@$(CC) $(CFLAGS) -o $@ $^
+	@$(CC) $(CFLAGS) -o $@ -c $^
 	@echo build $@ finish
 
 .PHONY: clean
