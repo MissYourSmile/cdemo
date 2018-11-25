@@ -1,0 +1,24 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+PTHREAD_RWLOCK_INITIALIZER	pthread_rwlock.h	24;"	d
+RW_MAGIC	pthread_rwlock.h	22;"	d
+_PTHREAD_RWLOCK_H	pthread_rwlock.h	9;"	d
+_TEST_H	test.h	9;"	d
+main	test.c	/^int main()$/;"	f
+pthread_rwlock_init	pthread_rwlock.c	/^int pthread_rwlock_init(pthread_rwlock_t *rw)$/;"	f
+pthread_rwlock_t	pthread_rwlock.h	/^typedef struct pthread_rwlock_t$/;"	s
+pthread_rwlock_t	pthread_rwlock.h	/^}pthread_rwlock_t;$/;"	t	typeref:struct:pthread_rwlock_t
+rw_condreaders	pthread_rwlock.h	/^	pthread_cond_t rw_condreaders;$/;"	m	struct:pthread_rwlock_t
+rw_condwriters	pthread_rwlock.h	/^	pthread_cond_t rw_condwriters;$/;"	m	struct:pthread_rwlock_t
+rw_magic	pthread_rwlock.h	/^	int rw_magic;$/;"	m	struct:pthread_rwlock_t
+rw_mutex	pthread_rwlock.h	/^	pthread_mutex_t rw_mutex;$/;"	m	struct:pthread_rwlock_t
+rw_nwaitreaders	pthread_rwlock.h	/^	int rw_nwaitreaders;$/;"	m	struct:pthread_rwlock_t
+rw_nwaitwriters	pthread_rwlock.h	/^	int rw_nwaitwriters;$/;"	m	struct:pthread_rwlock_t
+rw_refcount	pthread_rwlock.h	/^	int rw_refcount;$/;"	m	struct:pthread_rwlock_t
+rwlock	test.c	/^pthread_rwlock_t rwlock = PTHREAD_RWLOCK_INITIALIZER; $/;"	v
+thread_read	test.c	/^void *thread_read(void *arg)$/;"	f
+thread_write	test.c	/^void *thread_write(void *arg)$/;"	f

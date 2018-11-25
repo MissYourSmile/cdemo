@@ -19,7 +19,6 @@
 #include <errno.h>
 #include <sys/sem.h>
 #include <sys/shm.h>
-#include <sys/msg.h>
 #define BUFFER_SIZE 256
 
 //union semun
@@ -29,14 +28,6 @@ union semun
 	struct semid_ds *buf;
 	unsigned short *array;
 	struct seminfo *__buf;
-};
-
-//struct msgbuf
-#define MSG_BUFFER_SIZE 2
-struct msgbuf 
-{
-   	long mtype;
-	char mtext[MSG_BUFFER_SIZE];
 };
 
 //Pipe
@@ -55,12 +46,6 @@ int Semop(int semid, struct sembuf *sops, unsigned nsops);
 int Shmget(key_t key, size_t size, int shmflg);
 int Shmctl(int shmid, int cmd, struct shmid_ds *buf);
 void *Shmat(int shmid, const void *shmaddr, int shmflg);
-
-//IPC msg
-int Msgget(key_t key, int msgflg);
-int Msgctl(int msgid, int cmd, struct msqid_ds *buf);
-int Msgsnd(int msgid, const void *msgp, size_t msgsz, int msgflg);
-ssize_t Msgrcv(int msgid, void *msgp, size_t msgsz, long msgtyp, int msgflg);
 
 
 //print
