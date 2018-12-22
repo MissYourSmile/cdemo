@@ -32,4 +32,6 @@ int my_rwlock_wrlock(my_rwlock_t *rw);
 int my_rwlock_tryrdlock(my_rwlock_t *rw);
 int my_rwlock_trywrlock(my_rwlock_t *rw);
 int my_rwlock_unlock(my_rwlock_t *rw);
+void rwlock_cancelrdwait(void * arg);
+void rwlock_cancelwrwait(void * arg);
 #endif

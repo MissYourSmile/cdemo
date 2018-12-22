@@ -7,7 +7,8 @@
 
 #include "my_rwlock.h"
 #include <errno.h>
-#define READERS_PRIORITY
+#include <stdio.h>
+//#define READERS_PRIORITY
 
 int my_rwlock_init(my_rwlock_t *rw)
 {
@@ -61,9 +62,11 @@ int my_rwlock_rdlock(my_rwlock_t *rw)
 #endif
 	{
 		rw->rw_nwaitreaders++;
+		pthread_cleanup_push(&rwlock_cancelrdwait, (void*)rw);
 		result = pthread_cond_wait(&rw->rw_condreaders, &rw->rw_mutex);
+		pthread_cleanup_pop(0);
 		rw->rw_nwaitreaders--;
-		if(result == 0)	
+		if(result != 0)	
 			break;
 	}
 	if(result == 0)
@@ -87,9 +90,11 @@ int my_rwlock_wrlock(my_rwlock_t *rw)
 #endif
 	{
 		rw->rw_nwaitwriters++;
+		pthread_cleanup_push(&rwlock_cancelwrwait, (void*)rw);
 		result = pthread_cond_wait(&rw->rw_condwriters, &rw->rw_mutex);
+		pthread_cleanup_pop(0);
 		rw->rw_nwaitwriters--;
-		if(result == 0)	
+		if(result != 0)	
 			break;
 	}
 	if(result == 0)
@@ -99,10 +104,42 @@ int my_rwlock_wrlock(my_rwlock_t *rw)
 }
 int my_rwlock_tryrdlock(my_rwlock_t *rw)
 {
+	int result = 0;
+
+	if(rw->rw_magic != RW_MAGIC)
+		return EINVAL;
+	if(0 != (result = pthread_mutex_lock(&rw->rw_mutex)))
+		return result; 
+#ifdef READERS_PRIORITY
+	if(rw->rw_refcount < 0)
+#else
+	if(rw->rw_refcount < 0 || rw->rw_nwaitwriters > 0)
+#endif
+		return EBUSY;
+	else
+		rw->rw_refcount++;
+	pthread_mutex_unlock(&rw->rw_mutex);
+	return result;
 	
 }
 int my_rwlock_trywrlock(my_rwlock_t *rw)
 {
+	int result = 0;
+
+	if(rw->rw_magic != RW_MAGIC)
+		return EINVAL;
+	if(0 != (result = pthread_mutex_lock(&rw->rw_mutex)))
+		return result; 
+#ifdef READERS_PRIORITY
+	if(rw->rw_refcount != 0 || rw->rw_nwaitreaders > 0)
+#else
+	if(rw->rw_refcount != 0)
+#endif
+		return EBUSY;
+	else
+		rw->rw_refcount++;
+	pthread_mutex_unlock(&rw->rw_mutex);
+	return result;
 
 }
 
@@ -118,6 +155,8 @@ int my_rwlock_unlock(my_rwlock_t *rw)
 		rw->rw_refcount--;
 	else if(rw->rw_refcount == -1)
 		rw->rw_refcount = 0;		
+	else
+		printf("unlock error refcount : %d\n", rw->rw_refcount);
 
 #ifdef READERS_PRIORITY
 	if(rw->rw_nwaitreaders > 0)
@@ -139,4 +178,18 @@ int my_rwlock_unlock(my_rwlock_t *rw)
 
 	pthread_mutex_unlock(&rw->rw_mutex);
 	return result;
+}
+
+
+void rwlock_cancelrdwait(void * arg)
+{
+	my_rwlock_t *rw = (my_rwlock_t*)arg;
+	rw->rw_nwaitreaders--;
+	pthread_mutex_unlock(&rw->rw_mutex);
+}
+void rwlock_cancelwrwait(void * arg)
+{
+	my_rwlock_t *rw = (my_rwlock_t*)arg;
+	rw->rw_nwaitwriters--;
+	pthread_mutex_unlock(&rw->rw_mutex);
 }
