@@ -1,11 +1,11 @@
 all: ser cli
 
 ser: ser.c
-	gcc -o ser ser.c
+	g++ -o ser ser.c
 cli: cli.c
-	gcc -o cli cli.c
+	g++ -o cli cli.c
 
 .PHONY: clean
 
 clean: 
-	rm ser
+	rm ser cli
